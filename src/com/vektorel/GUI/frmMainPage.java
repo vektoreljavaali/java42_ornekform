@@ -5,19 +5,71 @@
  */
 package com.vektorel.GUI;
 
+import com.vektorel.DAO.tblmusteridao;
+import com.vektorel.Models.tblmusteri;
+
 /**
  *
  * @author vektorel
  */
 public class frmMainPage extends javax.swing.JFrame {
-
+    private tblmusteridao db = new tblmusteridao();
     /**
      * Creates new form frmMainPage
      */
     public frmMainPage() {
         initComponents();
+        ekle();
+        goster();
     }
 
+    private void ekle(){
+    
+        tblmusteri tmp;
+        
+        tmp = new tblmusteri();
+        tmp.setId(1);
+        tmp.setAd("Müşteri-3");
+        tmp.setAdres("Ankara");
+        tmp.setSoyad("Soyad-3");
+        tmp.setTelefon("0 555 666 9999");
+        db.kaydet(tmp);
+        
+        tmp = new tblmusteri();
+          tmp.setId(2);
+        tmp.setAd("Müşteri-2");
+        tmp.setAdres("İzmir");
+        tmp.setSoyad("Soyad-2");
+        tmp.setTelefon("0 555 666 9999");
+        db.kaydet(tmp);
+    
+        tmp = new tblmusteri();
+          tmp.setId(3);
+        tmp.setAd("Müşteri-1");
+        tmp.setAdres("İstanbul");
+        tmp.setSoyad("Soyad-1");
+        tmp.setTelefon("0 555 666 9999");
+        db.kaydet(tmp);
+    }
+    
+    private void goster(){
+        int i=0;
+        for(tblmusteri item: db.listele()){
+         tablomusteri.setValueAt(item.getId(), i,0);
+         tablomusteri.setValueAt(item.getAd(), i,1);
+         tablomusteri.setValueAt(item.getSoyad(), i,2);
+         tablomusteri.setValueAt(item.getTelefon(), i,3);
+         tablomusteri.setValueAt(item.getAdres(), i,4);
+         i++;
+        }
+        
+        
+        
+        
+       
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,7 +92,7 @@ public class frmMainPage extends javax.swing.JFrame {
         txtadres = new javax.swing.JTextArea();
         lblresim = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablomusteri = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -106,8 +158,8 @@ public class frmMainPage extends javax.swing.JFrame {
 
         jScrollPane2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
-        jTable1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablomusteri.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tablomusteri.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -148,18 +200,18 @@ public class frmMainPage extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(50);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(120);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(120);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setPreferredWidth(250);
+        jScrollPane2.setViewportView(tablomusteri);
+        if (tablomusteri.getColumnModel().getColumnCount() > 0) {
+            tablomusteri.getColumnModel().getColumn(0).setResizable(false);
+            tablomusteri.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tablomusteri.getColumnModel().getColumn(1).setResizable(false);
+            tablomusteri.getColumnModel().getColumn(1).setPreferredWidth(120);
+            tablomusteri.getColumnModel().getColumn(2).setResizable(false);
+            tablomusteri.getColumnModel().getColumn(2).setPreferredWidth(120);
+            tablomusteri.getColumnModel().getColumn(3).setResizable(false);
+            tablomusteri.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tablomusteri.getColumnModel().getColumn(4).setResizable(false);
+            tablomusteri.getColumnModel().getColumn(4).setPreferredWidth(250);
         }
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 600, 290));
@@ -245,8 +297,8 @@ public class frmMainPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblresim;
+    private javax.swing.JTable tablomusteri;
     private javax.swing.JTextField txtad;
     private javax.swing.JTextArea txtadres;
     private javax.swing.JTextField txtaramaad1;
