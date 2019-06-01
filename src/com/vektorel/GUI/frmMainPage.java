@@ -22,7 +22,8 @@ public class frmMainPage extends javax.swing.JFrame {
         ekle();
         goster();
     }
-
+    
+    // ÖRNEK İÇERİK
     private void ekle(){
     
         tblmusteri tmp;
