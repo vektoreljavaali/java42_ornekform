@@ -26,11 +26,19 @@ public class tblmusteridao implements ICRUD{
     @Override
     public void duzenle(Object o) {
         tblmusteri tmp = (tblmusteri)o;
-        for(tblmusteri item : myList){
-            if(item.getId()==tmp.getId()){
-            item = tmp;
+        
+        for (int i = 0; i < myList.size(); i++) {
+            if(myList.get(i).getId() == tmp.getId())
+            {
+                myList.get(i).setAd(tmp.getAd());
+                myList.get(i).setAdres(tmp.getAdres());
+                myList.get(i).setSoyad(tmp.getSoyad());
+                myList.get(i).setImageurl(tmp.getImageurl());
+                myList.get(i).setTelefon(tmp.getTelefon());
             }
         }
+        
+        
     }
 
     @Override
