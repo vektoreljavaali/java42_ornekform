@@ -8,8 +8,18 @@ package com.vektorel.GUI;
 import com.vektorel.DAO.tblmusteridao;
 import com.vektorel.Models.tblmusteri;
 import java.awt.Color;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class frmMainPage extends javax.swing.JFrame {
     private tblmusteridao db = new tblmusteridao();
-    
+    private String imageUrl;
     private int silinecekid;
     private int secilenrow;
     private String islem;
@@ -29,7 +39,7 @@ public class frmMainPage extends javax.swing.JFrame {
     public frmMainPage() {
         initComponents();
         ekle();
-        goster();
+        goster(db.listele());
     }
     
     // ÖRNEK İÇERİK
@@ -62,10 +72,10 @@ public class frmMainPage extends javax.swing.JFrame {
         db.kaydet(tmp);
     }
     
-    private void goster(){
+    private void goster(List<tblmusteri> list){
         int i=0;
         tablotemizle();
-        for(tblmusteri item: db.listele()){
+        for(tblmusteri item: list){
             tablosatirekle();
          tablomusteri.setValueAt(item.getId(), i,0);
          tablomusteri.setValueAt(item.getAd(), i,1);
@@ -120,6 +130,7 @@ public class frmMainPage extends javax.swing.JFrame {
         mst.setAdres(txtadres.getText());
         mst.setSoyad(txtsoyad.getText());
         mst.setTelefon(txttelefon.getText());
+        mst.setImageurl(imageUrl);
         db.kaydet(mst);       
     } 
     
@@ -140,7 +151,7 @@ public class frmMainPage extends javax.swing.JFrame {
                 , JOptionPane.ERROR_MESSAGE);
         if(secim == JOptionPane.OK_OPTION){
         db.sil(secilenrow);
-        goster();
+        goster(db.listele());
         }
     }
     
@@ -165,7 +176,7 @@ public class frmMainPage extends javax.swing.JFrame {
         txtadres.setText(mst.getAdres());
         txtsoyad.setText(mst.getSoyad());
         txttelefon.setText(mst.getTelefon());
-        
+          lblresim.setIcon(new javax.swing.ImageIcon(mst.getImageurl()));
     }
     
     private void duzenle(){
@@ -175,7 +186,7 @@ public class frmMainPage extends javax.swing.JFrame {
             mst.setSoyad(txtsoyad.getText());
             mst.setTelefon(txttelefon.getText());
             db.duzenle(mst);
-            goster();
+            goster(db.listele());
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -237,7 +248,6 @@ public class frmMainPage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Müşteri Kayıt Formu");
-        setAlwaysOnTop(true);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -294,7 +304,12 @@ public class frmMainPage extends javax.swing.JFrame {
 
         lblresim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/vektorel/Media/icons8-user-100.png"))); // NOI18N
         lblresim.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        getContentPane().add(lblresim, new org.netbeans.lib.awtextra.AbsoluteConstraints(481, 11, -1, -1));
+        lblresim.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblresimMouseClicked(evt);
+            }
+        });
+        getContentPane().add(lblresim, new org.netbeans.lib.awtextra.AbsoluteConstraints(481, 11, 110, 110));
 
         jScrollPane2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
@@ -377,6 +392,11 @@ public class frmMainPage extends javax.swing.JFrame {
 
         txtaramasoyad.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txtaramasoyad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtaramasoyad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtaramasoyadKeyReleased(evt);
+            }
+        });
         getContentPane().add(txtaramasoyad, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 213, 110, -1));
 
         txtaramaad1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -384,6 +404,9 @@ public class frmMainPage extends javax.swing.JFrame {
         txtaramaad1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtaramaad1KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtaramaad1KeyReleased(evt);
             }
         });
         getContentPane().add(txtaramaad1, new org.netbeans.lib.awtextra.AbsoluteConstraints(46, 213, 110, -1));
@@ -413,7 +436,7 @@ public class frmMainPage extends javax.swing.JFrame {
           else if(islem.equals("duzenle"))
                duzenle();
           
-          goster();
+          goster(db.listele());
             kapat();
       }
         
@@ -442,9 +465,46 @@ public class frmMainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnsilActionPerformed
 
     private void txtaramaad1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtaramaad1KeyPressed
-       
-        goster();      
+             
     }//GEN-LAST:event_txtaramaad1KeyPressed
+
+    private void txtaramasoyadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtaramasoyadKeyReleased
+       goster(db.soyadara(txtaramasoyad.getText()));
+    }//GEN-LAST:event_txtaramasoyadKeyReleased
+
+    private void txtaramaad1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtaramaad1KeyReleased
+       
+        goster(db.adara(txtaramaad1.getText()));
+    }//GEN-LAST:event_txtaramaad1KeyReleased
+
+    private void lblresimMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblresimMouseClicked
+       JFileChooser file = new JFileChooser();
+       int result = file.showOpenDialog(null);
+       if(result == JFileChooser.APPROVE_OPTION){
+       
+          String kaynak = file.getSelectedFile().getAbsolutePath();
+          String hedef = "src\\com\\vektorel\\Media\\Musteri\\"+file.getSelectedFile().getName();
+           
+           try {
+               File flout = new File(hedef);
+               File flin = new File(kaynak);
+               System.out.println("Hedef...: "+flout.getAbsolutePath());
+               Files.copy(file.getSelectedFile().toPath(),flout.toPath());
+           } catch (FileNotFoundException ex) {
+               Logger.getLogger(frmMainPage.class.getName()).log(Level.SEVERE, null, ex);
+           } catch (IOException ex) {
+               Logger.getLogger(frmMainPage.class.getName()).log(Level.SEVERE, null, ex);
+           }
+           
+           
+        // Bu Atama Mevcut Adresten(path) yapılır.
+        //lblresim.setIcon(         new javax.swing.ImageIcon(                        getClass().getResource("/com/vektorel/Media/Musteri/"+file.getSelectedFile().getName()))        );
+        imageUrl = file.getSelectedFile().getAbsolutePath();
+        lblresim.setIcon(new javax.swing.ImageIcon(file.getSelectedFile().getAbsolutePath()));
+       }
+       
+       
+    }//GEN-LAST:event_lblresimMouseClicked
 
     /**
      * @param args the command line arguments

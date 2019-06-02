@@ -56,7 +56,7 @@ public class tblmusteridao implements ICRUD{
        List<tblmusteri> tmplist = new ArrayList<>();
        String aranandeger = ad;
         for(tblmusteri item : myList){
-            if(item.getAd().contains(aranandeger))
+            if(item.getAd().toUpperCase().contains(aranandeger.toUpperCase()))
                 tmplist.add(item);
         }
         return tmplist;
@@ -66,7 +66,7 @@ public class tblmusteridao implements ICRUD{
        List<tblmusteri> tmplist = new ArrayList<>();
        String aranandeger = soyad;
         for(tblmusteri item : myList){
-            if(item.getSoyad().contains(aranandeger))
+            if(item.getSoyad().toUpperCase().contains(aranandeger.toUpperCase()))
                 tmplist.add(item);
         }
         return tmplist;
