@@ -8,6 +8,8 @@ package com.vektorel.GUI;
 import com.vektorel.DAO.tblmusteridao;
 import com.vektorel.Models.tblmusteri;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -379,6 +381,11 @@ public class frmMainPage extends javax.swing.JFrame {
 
         txtaramaad1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txtaramaad1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtaramaad1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtaramaad1KeyPressed(evt);
+            }
+        });
         getContentPane().add(txtaramaad1, new org.netbeans.lib.awtextra.AbsoluteConstraints(46, 213, 110, -1));
 
         pack();
@@ -433,6 +440,11 @@ public class frmMainPage extends javax.swing.JFrame {
         secilenrow = tablomusteri.getSelectedRow();
         sil();
     }//GEN-LAST:event_btnsilActionPerformed
+
+    private void txtaramaad1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtaramaad1KeyPressed
+       
+        goster();      
+    }//GEN-LAST:event_txtaramaad1KeyPressed
 
     /**
      * @param args the command line arguments

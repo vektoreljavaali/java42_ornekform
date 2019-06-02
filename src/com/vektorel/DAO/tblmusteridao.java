@@ -52,11 +52,41 @@ public class tblmusteridao implements ICRUD{
     }
 
     
-    public List<Object> ara(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<tblmusteri> adara(String ad) {
+       List<tblmusteri> tmplist = new ArrayList<>();
+       String aranandeger = ad;
+        for(tblmusteri item : myList){
+            if(item.getAd().contains(aranandeger))
+                tmplist.add(item);
+        }
+        return tmplist;
     }
 
+    public List<tblmusteri> soyadara(String soyad) {
+       List<tblmusteri> tmplist = new ArrayList<>();
+       String aranandeger = soyad;
+        for(tblmusteri item : myList){
+            if(item.getSoyad().contains(aranandeger))
+                tmplist.add(item);
+        }
+        return tmplist;
+    }
    
+    
+    public List<tblmusteri> listem(String ad){
+       List<tblmusteri> tmplist = new ArrayList<>();
+       for(tblmusteri item : myList){
+           if(item.getAd().contains(ad))
+               tmplist.add(item);                      
+                       
+       }
+       return tmplist;
+    }
+    
+    
+   
+    
+    
     public Object bul(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
